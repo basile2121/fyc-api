@@ -5,8 +5,11 @@ import sharePriceRouter from "./sharePriceRouter.ts";
 import transactionRouter from "./transactionRouter.ts";
 import userRouter from "./userRouter.ts";
 import walletSharePriceRouter from "./walletSharePriceRouter.ts";
+import { validateAuthentificationMiddleware } from "../../middlewares/check-auth.ts";
 
 const appRouter = new Router();
+
+appRouter.use(validateAuthentificationMiddleware('USER'));
 
 appRouter.use("/sharePriceHistories", sharePriceHistoryRouter.routes());
 appRouter.use("/sharePrices", sharePriceRouter.routes());
