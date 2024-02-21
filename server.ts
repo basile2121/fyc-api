@@ -1,10 +1,7 @@
-import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import userRouter from "./routes/user.ts";
-import roleRouter from "./routes/role.ts";
-import sharePriceRouter from "./routes/sharePrice.ts";
-import transactionRouter from "./routes/transaction.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { Application, Router, oakCors, config } from "./deps.ts";
+import appRouter from "./routes/app/index.ts";
+import adminRouter from "./routes/admin/index.ts";
+import RequestLimitMiddleware from "./middlewares/check-all-requests.ts"
 
 const env = config();
 const { PORT, HOSTNAME } = env;
@@ -12,19 +9,25 @@ const { PORT, HOSTNAME } = env;
 const app = new Application();
 const router = new Router();
 
-router.use("/users", userRouter.routes());
-router.use("/roles", roleRouter.routes());
-router.use("/sharePrices", sharePriceRouter.routes());
-router.use("/transactions", transactionRouter.routes());
+const maxRequests = 100; // Nombre maximal de requêtes autorisées
+const requestDuration = 60 * 1000; // Durée de la fenêtre de requêtes en millisecondes (1 minute)const listener = Deno.listen({ hostname: "localhost", port: 8080 });
 
+// Création du middleware avec les paramètres personnalisés
+const requestLimitMiddleware = RequestLimitMiddleware("server", maxRequests, requestDuration);
+app.use(requestLimitMiddleware);
+
+// Utilisation des routers
+router.use("/app", appRouter.routes());
+router.use("/admin", adminRouter.routes());
+
+app.use(oakCors({ origin: "*" }));
 app.use(router.routes());
 app.use(router.allowedMethods());
-app.use(oakCors({ origin: "*" }));
 
 app.addEventListener("listen", ({ secure, hostname, port }) => {
     const protocol = secure ? "https://" : "http://";
     const url = `${protocol}${hostname ?? "localhost"}:${port}`;
-    console.log(`Listening on: ${port}`);
+    console.log(`Listening on: ${url}`);
 });
 
 const port = parseInt(PORT) || 8080;
