@@ -1,12 +1,3 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsBoolean,
-  IsNumber,
-  IsOptional,
-  IsDate,
-} from '../../deps.ts';
-
 export interface UserSchema {
   id: number;
   firstName: string;
@@ -44,61 +35,14 @@ export interface UserSchemaCreate {
   roleId: number;
 }
 
-// Sans validation
-// export interface UserSchemaRegister {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   password: string;
-//   wallet: number;
-//   isCdu: boolean;
-//   cduAcceptedAt?: Date;
-// }
-
-// Avec validation
-export class UserSchemaRegister {
-  @IsNotEmpty()
+export interface UserSchemaRegister {
   firstName: string;
-
-  @IsNotEmpty()
   lastName: string;
-
-  @IsNotEmpty()
-  @IsEmail()
   email: string;
-
-  @IsNotEmpty()
   password: string;
-
-  @IsNotEmpty()
-  @IsNumber()
   wallet: number;
-
-  @IsNotEmpty()
-  @IsBoolean()
   isCdu: boolean;
-
-  @IsOptional()
-  @IsDate()
   cduAcceptedAt?: Date;
-
-  constructor(userData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    wallet: number;
-    isCdu: boolean;
-    cduAcceptedAt?: Date;
-  }) {
-    this.firstName = userData.firstName;
-    this.lastName = userData.lastName;
-    this.email = userData.email;
-    this.password = userData.password;
-    this.wallet = userData.wallet;
-    this.isCdu = userData.isCdu;
-    this.cduAcceptedAt = userData.cduAcceptedAt;
-  }
 }
 
 export interface UserSchemaRoleUpdate {
