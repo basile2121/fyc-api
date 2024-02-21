@@ -1,4 +1,4 @@
-import dbClient from "../connectDb.ts";
+import dbClient from "../db/connectDb.ts";
 import { UserSchema, UserSchemaWalletUpdate, UserSchemaCreate, UserSchemaInfoUpdate, UserSchemaRoleUpdate } from "../schema/usersSchema.ts";
 
 const UserService = {

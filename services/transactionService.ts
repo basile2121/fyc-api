@@ -1,4 +1,4 @@
-import dbClient from "../connectDB.ts";
+import dbClient from "../db/connectDb.ts";
 import { TransactionSchema, TransactionSchemaCreate } from "../schema/transactionsSchema.ts";
 
 const TransactionService = {
