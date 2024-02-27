@@ -14,7 +14,6 @@ import { UpdateByIdSharePriceResponse } from "../../schema/sharePrice/sharePrice
 import { WalletSharePriceSchema } from "../../schema/sharePrice/walletSharePricesSchema.ts";
 import { CreateResponse } from "../../schema/utils/responsesSchema.ts";
 import { InfoResponse } from "../../schema/utils/responsesSchema.ts";
-import getConnectedUser from "../../utils/checkConnectedUser.ts";
 import checkHttpMethod from "../../utils/checkHttpMethod.ts";
 
 interface CustomContext extends Context {
@@ -30,10 +29,8 @@ const TransactionController = {
                 return;
             }
 
-            const userId = getConnectedUser(ctx);
-            if (!userId) {
-                return
-            }
+            const userId = 1;
+
             const userTransaction = await transactionService.findByUserId(Number(userId));
             ctx.response.status = userTransaction.httpCode;
             ctx.response.body = {
@@ -57,10 +54,7 @@ const TransactionController = {
                 return;
             }
 
-            const userId = await getConnectedUser(ctx);
-            if (!userId) {
-                return
-            }
+            const userId = 1;
 
             const transactionDataRequest: RequestTransactionSchemaCreate = await ctx.request.body().value;
             const typeTransaction = "Achat";
@@ -184,10 +178,7 @@ const TransactionController = {
                 return;
             }
 
-            const userId = await getConnectedUser(ctx);
-            if (!userId) {
-                return
-            }
+            const userId = 1;
 
             const transactionDataRequest: RequestTransactionSchemaCreate = await ctx.request.body().value;
             const typeTransaction = "Vente";

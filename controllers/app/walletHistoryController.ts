@@ -1,7 +1,6 @@
 import { Context } from "../../deps.ts";
 import walletHistoryService from "../../services/user/walletHistoryService.ts";
 import checkHttpMethod from "../../utils/checkHttpMethod.ts";
-import getConnectedUser from "../../utils/checkConnectedUser.ts";
 
 interface CustomContext extends Context {
   params: {
@@ -16,10 +15,7 @@ const WalletHistoryController = {
         return;
       }
 
-      const userId = await getConnectedUser(ctx);
-      if (!userId) {
-        return
-      }
+      const userId = 1;
 
       const userWalletHistory = await walletHistoryService.findByUserId(userId);
       ctx.response.status = userWalletHistory.httpCode;
