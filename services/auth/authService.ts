@@ -1,4 +1,4 @@
-import { bcrypt, validate } from "../../deps.ts";
+import { bcrypt } from "../../deps.ts";
 
 import { UserLoginSchemaCreate } from "../../schema/user/userLoginsSchema.ts";
 import { UserSchemaRegister, UserSchemaLogin } from '../../schema/user/usersSchema.ts';
@@ -9,17 +9,6 @@ import { LoginResponse, RegisterResponse } from "../../schema/auth/authSchema.ts
 const AuthentificationService = {
   async register(data: UserSchemaRegister): Promise<RegisterResponse> {
     try {
-      const errors = await validate(new UserSchemaRegister(data));
-
-      if (errors.length > 0) {
-        return {
-          success: false,
-          message: "Les données fournies ne sont pas valides",
-          httpCode: 422,
-          errors: errors
-        }
-      }
-
       const createUserResponse = await userService.register(data);
 
       if (createUserResponse.success) {
